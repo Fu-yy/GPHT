@@ -12,7 +12,9 @@ python run.py \
     --data_path ETTh1.csv \
     --dropout 0.0 \
     --learning_rate 0.0001 \
-    --gpu $device
+    --gpu $device \
+    > ./run_log/log_test_win/ETTh1/'GPHT_finetune'0.01.log 2>&1
+
 
 # evalution
 for pred in 96; do
@@ -26,5 +28,7 @@ for pred in 96; do
     --root_path ./dataset/ETT-small/ \
     --data_path ETTh1.csv \
     --ar_pred_len $pred \
-    --gpu $device
+    --gpu $device \
+    > ./run_log/log_test_win/ETTh1/'GPHT_evalution'$pred_len'_'0.01.log 2>&1
+
   done
