@@ -50,6 +50,7 @@ class Dataset_Pretrain(Dataset):
             print('dataset {0}, length {1}'.format(file, self.num_channels[-1] * len(Data)))
             self.bounds.append(self.bounds[-1] + self.num_channels[-1] * len(Data))
         # for file in ['traffic', 'exchange_rate', 'electricity', 'weather']:
+        # for file in ['electricity']:
         #     Data = data_dict[file]('dataset/' + file + '/', flag, size, features, file + '.csv', target, scale, timeenc,
         #                            freq, percent=percent)
         #     self.num_channels.append(Data.data_x.shape[-1])
@@ -74,6 +75,9 @@ class Dataset_Pretrain(Dataset):
 
         seq_x = self.data_xs[i][s_begin:s_end, channel:channel + 1]
         seq_y = self.data_ys[i][r_begin:r_end, channel:channel + 1]
+
+        # seq_x = self.data_xs[i][s_begin:s_end]
+        # seq_y = self.data_ys[i][r_begin:r_end]
         return seq_x, seq_y, 0, 0
 
 

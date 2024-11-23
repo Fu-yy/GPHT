@@ -1,0 +1,55 @@
+long_term_forecast_GPHT_ETTh1_GPHT_dm512_dff2048_pr[8, 4, 2, 1]_el3_d4_sq336_0  
+mse:0.36923694610595703, mae:0.3962852358818054params:models: GPHT,datasets:ETTh1,seq_len:336,pred_len: 48,macs:59.506G, params:37.977M  
+datetime:2024-11-22  17:29:56  Friday    # 还用残差，但是损失位置不用拼接 202411221753
+
+
+long_term_forecast_GPHT_ETTh1_GPHT_dm512_dff2048_pr[8, 4, 2, 1]_el3_d4_sq336_0  
+mse:0.36923694610595703, mae:0.3962852358818054params:models: GPHT,datasets:ETTh1,seq_len:336,pred_len: 48,macs:59.506G, params:37.977M  
+datetime:2024-11-22  17:30:13  Friday  
+
+
+long_term_forecast_GPHT_ETTh1_GPHT_dm512_dff2048_pr[8, 4, 2, 1]_el3_d4_sq336_0  
+mse:0.36923694610595703, mae:0.3962852358818054params:models: GPHT,datasets:ETTh1,seq_len:336,pred_len: 48,macs:59.506G, params:37.977M  
+datetime:2024-11-22  17:32:05  Friday  
+
+
+long_term_forecast_GPHT_pretrain_GPHT_dm512_dff2048_pr[8, 4, 2, 1]_el3_d4_sq336_0  
+mse:0.38077840209007263, mae:0.4030083119869232params:models: GPHT,datasets:pretrain,seq_len:336,pred_len: 48,macs:272.029G, params:37.977M  
+datetime:2024-11-22  17:39:47  Friday  
+
+
+long_term_forecast_GPHT_ETTh1_GPHT_dm512_dff2048_pr[8, 4, 2, 1]_el3_d4_sq336_0  
+mse:0.3719598948955536, mae:0.3972412049770355params:models: GPHT,datasets:ETTh1,seq_len:336,pred_len: 48,macs:59.506G, params:37.977M  
+datetime:2024-11-22  17:43:50  Friday  
+
+
+long_term_forecast_GPHT_ETTh1_GPHT_dm512_dff2048_pr[8, 4, 2, 1]_el3_d4_sq336_0  
+mse:0.3719598948955536, mae:0.3972412049770355params:models: GPHT,datasets:ETTh1,seq_len:336,pred_len: 48,macs:59.506G, params:37.977M  
+datetime:2024-11-22  17:44:07  Friday    # 不用残差，损失位置不用拼接 202411221754
+
+
+long_term_forecast_GPHT_ETTh2_GPHT_dm512_dff2048_pr[8, 4, 2, 1]_el3_d4_sq336_0  
+mse:0.28644123673439026, mae:0.34727010130882263params:models: GPHT,datasets:ETTh2,seq_len:336,pred_len: 48,macs:59.506G, params:37.977M  
+datetime:2024-11-22  17:48:40  Friday  
+
+
+long_term_forecast_GPHT_ETTh2_GPHT_dm512_dff2048_pr[8, 4, 2, 1]_el3_d4_sq336_0  
+mse:0.28644123673439026, mae:0.34727010130882263params:models: GPHT,datasets:ETTh2,seq_len:336,pred_len: 48,macs:59.506G, params:37.977M  
+datetime:2024-11-22  17:48:56  Friday  
+
+
+long_term_forecast_GPHT_ETTh2_GPHT_dm512_dff2048_pr[8, 4, 2, 1]_el3_d4_sq336_0  
+mse:0.3490297198295593, mae:0.3899998664855957params:models: GPHT,datasets:ETTh2,seq_len:336,pred_len: 48,macs:59.506G, params:37.977M  
+datetime:2024-11-22  17:49:18  Friday  
+
+
+long_term_forecast_GPHT_ETTh2_GPHT_dm512_dff2048_pr[8, 4, 2, 1]_el3_d4_sq336_0  
+mse:0.3857293725013733, mae:0.41912591457366943params:models: GPHT,datasets:ETTh2,seq_len:336,pred_len: 48,macs:59.506G, params:37.977M  
+datetime:2024-11-22  17:49:52  Friday  
+
+
+long_term_forecast_GPHT_ETTh2_GPHT_dm512_dff2048_pr[8, 4, 2, 1]_el3_d4_sq336_0  
+mse:0.41883668303489685, mae:0.44890689849853516params:models: GPHT,datasets:ETTh2,seq_len:336,pred_len: 48,macs:59.506G, params:37.977M  
+datetime:2024-11-22  17:50:44  Friday  
+
+

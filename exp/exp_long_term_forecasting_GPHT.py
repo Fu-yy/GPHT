@@ -1,3 +1,5 @@
+import datetime
+
 from data_provider.data_factory import data_provider
 from exp.exp_basic import Exp_Basic
 from utils.tools import EarlyStopping, adjust_learning_rate, visual, clever_format
@@ -63,10 +65,15 @@ class Exp_Long_Term_Forecast_GPHT(Exp_Basic):
                     else:
                         outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
                 outputs = outputs[0] if isinstance(outputs, tuple) else outputs
-                outputs = outputs[:, :, f_dim:]
-                batch_y = torch.cat(
-                    [batch_x[:, self.args.token_len:, :], batch_y[:, -self.args.token_len:, f_dim:].to(self.device)],
-                    dim=1)
+
+                # outputs = outputs[:, :, f_dim:]
+                # batch_y = torch.cat([batch_x[:, self.args.token_len:, :], batch_y[:, -self.args.token_len:, f_dim:].to(self.device)],dim=1)
+                # batch_y = batch_y[:, -self.args.pred_len:, f_dim:].to(self.device)
+
+                outputs = outputs[:, -self.args.ar_pred_len:, f_dim:]
+                # batch_y = torch.cat([batch_x[:, self.args.token_len:, :], batch_y[:, -self.args.token_len:, f_dim:].to(self.device)],dim=1)
+                batch_y = batch_y[:, -self.args.ar_pred_len:, f_dim:].to(self.device)
+
                 pred = outputs.detach().cpu()
                 true = batch_y.detach().cpu()
 
@@ -145,10 +152,14 @@ class Exp_Long_Term_Forecast_GPHT(Exp_Basic):
 
                     else:
                         outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
-                outputs = outputs[:, :, f_dim:]
-                batch_y = torch.cat(
-                    [batch_x[:, self.args.token_len:, :], batch_y[:, -self.args.token_len:, f_dim:].to(self.device)],
-                    dim=1)
+
+
+                # outputs = outputs[:, :, f_dim:]
+                # batch_y = torch.cat([batch_x[:, self.args.token_len:, :], batch_y[:, -self.args.token_len:, f_dim:].to(self.device)],dim=1)
+
+
+                outputs = outputs[:, -self.args.ar_pred_len:, f_dim:]
+                batch_y = batch_y[:, -self.args.ar_pred_len:, f_dim:].to(self.device)
 
                 loss = criterion(outputs, batch_y)
                 train_loss.append(loss.item())
@@ -188,7 +199,49 @@ class Exp_Long_Term_Forecast_GPHT(Exp_Basic):
         self.model.load_state_dict(torch.load(best_model_path, map_location=self.device))
 
         return self.model
+    def train_count_params(self, setting):
+        from thop import profile
+        from thop import clever_format
 
+        train_data, train_loader = self._get_data(flag='train')
+
+        model_optim = self._select_optimizer()
+        result_str = ""
+        for epoch in range(self.args.train_epochs):
+            iter_count = 0
+
+            self.model.train()
+            for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in enumerate(train_loader):
+                iter_count += 1
+                model_optim.zero_grad()
+                batch_x = batch_x.float().to(self.device)
+
+
+                batch_y = batch_y[:, -self.args.pred_len:, :].to(self.device)
+
+                batch_x_mark = batch_x_mark.float().to(self.device)
+                batch_y_mark = batch_y_mark.float().to(self.device)
+
+                # decoder input
+                dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float()
+                dec_inp = torch.cat([batch_y[:, :self.args.label_len, :], dec_inp], dim=1).float().to(self.device)
+                dec_inp = batch_y
+                outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)  # 7*96*7
+
+                macs, params = profile(self.model, inputs=(batch_x, batch_x_mark, dec_inp, batch_y_mark))
+                macs, params = clever_format([macs, params], "%.3f")
+
+                print("models: {},datasets: {},seq_len:{},pred_len: {},macs: {}, params: {}".format(self.args.model,
+                                                                                                    self.args.data,
+                                                                                                    self.args.seq_len,
+                                                                                                    self.args.pred_len,
+                                                                                                    macs, params))
+                result_str = ("models: " + str(self.args.model)+",datasets:" + self.args.data +
+                              ",seq_len:"+str(self.args.seq_len) +",pred_len: "+str(self.args.pred_len)+",macs:"+ str(macs)+", params:" + str(params))
+                break
+
+            break
+        return result_str
     def test(self, setting, test=0):
         test_data, test_loader = self._get_data(flag='ar_test')
         if test:
@@ -255,4 +308,14 @@ class Exp_Long_Term_Forecast_GPHT(Exp_Basic):
 
         mae, mse, rmse, mape, mspe = metric(preds, trues)
         print('mse:{}, mae:{}'.format(mse, mae))
+
+        f = open("result_long_term_forecast.txt", 'a')
+        f.write(setting + "  \n")
+        f.write('mse:{}, mae:{}'.format(mse, mae))
+        params_str = self.train_count_params(self.args)
+        f.write('params:{}'.format(params_str) + "  \n")
+        f.write('datetime:{}'.format(datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S  %A')) + "  \n")
+        f.write('\n')
+        f.write('\n')
+        f.close()
         return mae, mse

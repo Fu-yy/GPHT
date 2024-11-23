@@ -29,6 +29,6 @@ for pred in 96; do
     --data_path ETTh1.csv \
     --ar_pred_len $pred \
     --gpu $device \
-    > ./run_log/log_test_win/ETTh1/'GPHT_evalution'$pred_len'_'0.01.log 2>&1
+    > ./run_log/log_test_win/ETTh1/'GPHT_evalution'$pred'_'0.01.log 2>&1
 
   done
